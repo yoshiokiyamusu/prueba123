@@ -1,0 +1,35 @@
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+
+
+<div class="container">
+  <div class="pos-f-t">
+    <div class="collapse" id="navbarToggleExternalContent">
+      <div class="bg-dark p-4">
+
+        <h5 class="text-white">
+          Ver todas las ordenes de despacho
+          <a  type="button" href="<?php echo url_for('view-despacho/crear_orden/despacho_pendiente.php'); ?>"  class="btn btn-info navbar-btn">Ver ordenes</a>
+        </h5>
+      </hr>
+        <h5 class="text-white">
+          Crear orden de despacho
+          <a type="button" href="<?php echo url_for('view-despacho/crear_orden/agregar_orden_despacho.php'); ?>" class="btn btn-success navbar-btn">Agregar orden </a>
+        </h5>
+      </hr>
+      <!--
+        <h5 class="text-white">
+          Completar una orden de corte (La tela ya fue cortada):
+          <a type="button" href="<?php echo url_for('view-orden_de_corte/completar_orden_corte.php'); ?>" class="btn navbar-btn">Completar orden de corte </a>
+        </h5>
+      -->
+      </div>
+    </div>
+    <nav class="navbar navbar-dark bg-dark"><h4 class="text-white">Cocotfyma:</h4>
+      <button class="navbar-toggler" type="button" data-toggle="collapse"
+              data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </nav>
+  </div>
+</div>

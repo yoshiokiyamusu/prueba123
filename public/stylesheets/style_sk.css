@@ -1,0 +1,48 @@
+/* Pagination */
+
+.pagination {
+  margin: 1em 0;
+}
+
+.pagination a, .pagination span {
+  display: inline-block;
+  margin: 0 5px;
+}
+
+.pagination span.selected {
+  font-weight: bold;
+  color: #000;
+}
+
+/*cuando aparece 0 unidades en la pagina data de ordenes de corte*/
+td.oc_incompleta{
+  border-color: #0A0502;
+}
+/*boton de enviar o no enviar al taller de servicio*/
+button.btn_enviar {
+  color: #0A0908;
+  background-color: #EADBD0;
+  border-color: #0A0502;
+}
+td.para_enviar{
+  display:none;
+  /* display block significa q si aparece en la frontend*/
+}
+button.btn_des_enviar {
+  color: #6C3918;
+  background-color: #30C1AB;
+  border-color: #134B42;
+}
+td.para_desenviar {
+display:none;
+}
+/*
+.cl_ordenar:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active {
+  color: #6C3918;
+  background-color: #30C1AB;
+  border-color: #134B42;
+}
+*/

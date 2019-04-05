@@ -1,0 +1,11 @@
+input.en_rojo {
+  font-weight: bold;
+  background-color: #ff1a1a;
+  border-color: #ff1a1a;
+}
+
+input.en_verde {
+  font-weight: bold;
+  background-color: #33cc33;
+  border-color: #33cc33;
+}

@@ -1,0 +1,173 @@
+crear las tablas http://m.sql.11sql.com/sql-datos-numericos-mysql.htm
+
+
+create table auto(
+id_record INT(11) not null,
+patente VARCHAR(25),
+marca VARCHAR(20),
+modelo VARCHAR(40),
+ano VARCHAR(5),
+id_cliente VARCHAR(12),
+comuna VARCHAR(25),
+region VARCHAR(35),
+sexo VARCHAR(5),
+actividad VARCHAR(5),
+tasacion VARCHAR(12),
+fecha_transferencia DATE,
+color VARCHAR(25),
+edad VARCHAR(3),
+vigencia VARCHAR(3),
+PRIMARY KEY (id_record)
+);
+
+
+
+
+
+
+create table producto_noconforme(
+noconforme_id INT(11) not null AUTO_INCREMENT,
+tipo_accion VARCHAR(25) NOT NULL,
+usuario VARCHAR(25) NOT NULL,
+timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+PRIMARY KEY (noconforme_id) 
+);
+
+create table orden_despacho(
+orden_despacho_id INT(11) not null AUTO_INCREMENT,
+cod_orden_despacho VARCHAR(25) NOT NULL,
+fecha_creacion DATE not null,
+fecha_despacho DATE not null,
+PRIMARY KEY (orden_despacho_id) 
+);
+/*----out_pedidos-----------------------------*/
+
+create table despacho_motivo(
+despacho_motivo_id INT(11) not null AUTO_INCREMENT,
+cod_orden_despacho VARCHAR(25) NOT NULL,
+motivo_despacho VARCHAR(250) NOT NULL,
+nota_pedido VARCHAR(100) NOT NULL,
+cliente VARCHAR(250) NOT NULL,
+motivo VARCHAR(250) NOT NULL,
+monto VARCHAR(25) NOT NULL,
+contacto VARCHAR(250) NOT NULL,
+PRIMARY KEY (despacho_motivo_id)
+);
+
+create table orden_despacho_sku(
+orden_despacho_sku_id INT(11) not null AUTO_INCREMENT,
+cod_orden_despacho VARCHAR(25) NOT NULL,
+sku VARCHAR(25) not null,
+cantidad DOUBLE(8,2) not null,
+PRIMARY KEY (orden_despacho_sku_id) 
+);
+
+
+----------------------------------------------------------------------
+create table orden_de_servicio(
+orden_servicio_id INT(11) not null AUTO_INCREMENT,
+orden_servicio VARCHAR(25) NOT NULL,
+fecha_orden_servicio DATE not null,
+recibo_fecha_desde DATE not null,
+recibo_fecho_hasta DATE not null,
+estado VARCHAR(25) NOT NULL,
+PRIMARY KEY (orden_servicio_id) 
+);
+
+create table orden_de_servicio_sku(
+orden_serv_sku_id INT(11) not null AUTO_INCREMENT,
+orden_servicio VARCHAR(25) NOT NULL,
+orden_corte VARCHAR(25) not null,
+sku VARCHAR(25) not null,
+sku_readable VARCHAR(250) not null,
+cantidad DOUBLE(8,2) not null,
+PRIMARY KEY (orden_serv_sku_id) 
+);
+
+
+create table stock(
+stock_id INT(11) not null AUTO_INCREMENT,
+recepcion_id INT(11) not null,
+despacho_id INT(11) not null,
+sku VARCHAR(50) not null,
+cantidad INT(11) not null,
+nombre_operacion VARCHAR(250) not null,
+locacion VARCHAR(50) not null,
+timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+PRIMARY KEY (stock_id) 
+);
+---------------------------------------------------------------
+create table insumo_orden_corte(
+insumo_id INT(11) not null AUTO_INCREMENT,
+orden_corte VARCHAR(25) not null, 
+fecha_emision DATE not null,
+string_categ_sku VARCHAR(50) not null,
+color_rollo VARCHAR(150) not null,
+sku VARCHAR(250) not null,
+cant_solicitada_kg DOUBLE(8,2) not null,
+timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+PRIMARY KEY (insumo_id) 
+);
+
+create table recepcion(
+stock_id INT(11) not null AUTO_INCREMENT,
+orden_servicio VARCHAR(25) NOT NULL,
+orden_corte VARCHAR(25) not null,
+sku VARCHAR(35) not null,
+cantidad INT(11) not null,
+estado_sku VARCHAR(250) not null,
+fecha_recibida DATE not null,
+locacion VARCHAR(250) not null,
+PRIMARY KEY (recepcion_id) 
+);
+
+
+
+
+INSERT INTO `stock`( `orden_servicio`, `orden_corte`, `sku`, `cantidad`, `estado_sku`, `fecha_recibida`, `locacion`) VALUES ('OS-2019-2-20v2','OC-2019-2-20v1','FKJ1-07002',1000,'conforme','2019-02-15','almacen H'),
+('OS-2019-2-20v1','OC-2019-2-20v6','PJ1A-01006',60,'conforme','2019-02-14','almacen M')
+
+
+
+create table orden_de_corte(
+corte_id INT(11) not null AUTO_INCREMENT,
+orden_corte VARCHAR(25) NOT NULL,
+fecha_de_corte DATE not null,
+cant_solicitada_rollos_kg INT(11) not null,
+categoria_sku VARCHAR(25) NOT NULL,
+sku VARCHAR(250) NOT NULL,
+nombre_item VARCHAR(250) NOT NULL,
+cantidad_units INT(11) not null,
+peso_kg INT(11) not null,
+PRIMARY KEY (corte_id) 
+);
+
+
+create table almacen_produccion_cortes(
+alm_corte_id INT(11) not null AUTO_INCREMENT,
+orden_corte VARCHAR(25) NOT NULL,
+sku VARCHAR(250) NOT NULL,
+nombre_item VARCHAR(250) NOT NULL,
+cantidad_units_enviadas INT(11) not null,
+fecha_de_envio DATE not null,
+peso_kg INT(11) not null,
+);
+
+-----------------------------------------
+In Javascript, how do I check if an array has duplicate values? [duplicate]
+
+$colnames es un array
+$colnames = array("nombre", "posicion", "ano_inicio", "detalles","notas");
+$colnames[$i]
+
+function hasDuplicates(array) {
+    var valuesSoFar = [];
+    for (var i = 0; i < array.length; ++i) {
+        var value = array[i];
+        if (valuesSoFar.indexOf(value) !== -1) {
+            return true;
+        }
+        valuesSoFar.push(value);
+    }
+    return false;
+}
