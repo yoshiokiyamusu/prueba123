@@ -4,6 +4,7 @@ require_once('../../private/initialize.php');
 ?>
 
 <?php
+//git prueba!
 // Find all users
 $admins = user::find_all();
 
