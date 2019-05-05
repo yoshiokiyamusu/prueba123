@@ -60,7 +60,11 @@
 
 <div class="container">
    <?php echo display_errors($new_ajuste->errors); ?>
-  <button class="btn btn-dark" onclick="godiccionario()">Ir atras</button>
+   
+   <h2>
+     <a type="button" href="<?php echo url_for('diccionario.php'); ?>" class="btn btn-dark">Ir atras:</a>
+   </h2>
+
   <h2>Editar cantidad de inventario por producto:</h2>
   <h3>
     <?php
@@ -87,6 +91,7 @@
           }
     ?>
   </code></h3>
+
 
 &nbsp;&nbsp;
 

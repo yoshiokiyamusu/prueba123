@@ -43,7 +43,7 @@ static protected $db_columns = ['recepcion_id', 'orden_servicio','sku','cantidad
     $sql .= " ON rec.orden_servicio = os.orden_servicio ";
     $sql .= " left join producto_noconforme as pnc ";
     $sql .= " ON rec.recepcion_id = pnc.recepcion_cod ";
-    $sql .= " where rec.estado_sku = 'no-conforme' AND pnc.recepcion_cod is null ";
+    $sql .= " where rec.estado_sku = 'no-conforme' AND pnc.recepcion_cod is null AND rec.cantidad > 0 ";
 //ChromePhp::log($sql);
     return static::find_by_sql($sql);
   }

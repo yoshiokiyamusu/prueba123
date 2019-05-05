@@ -38,12 +38,6 @@
 ?>
 
 
-
-
-
-
-
-
     <form id="" action="<?php echo url_for('view-gest-inventarios/view-noconforme/noconformept.php'); ?>" method="post">
 
       <div class="container jumbotron">

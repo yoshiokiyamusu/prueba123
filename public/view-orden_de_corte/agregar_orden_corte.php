@@ -10,9 +10,18 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
 <?php
+  require_once('../../private/mysqli_connect.php');
+  //$connection = new mysqli("localhost", "webuser", "yoshio12qw", "corner_tool");
   //when submit
   if(is_post_request()) {
-  
+    $fallo_insrt_tb_ordCorte == false;
+    //crear la transaccion
+
+ try {
+    $trans_ordcorte =  $connection->stmt_init();
+    $trans_ordtela = $connection->stmt_init();
+    $connection->autocommit(false);
+
     $post_count = count($_POST); //count how many posts
     //ChromePhp::log('total post num natural: '. $post_count);
     $post_count = ($post_count-2)/3; //ChromePhp::log('total post num2: '. $post_count);
@@ -55,53 +64,87 @@
         $args['status'] = 'en_proceso';
 
         $orden_de_corte = new orden_de_corte($args);
-        //ChromePhp::log(print_r($orden_de_corte));
-        $result_uno = $orden_de_corte->save();
+
+        if (!$trans_ordcorte->prepare( $orden_de_corte->create_record_transac() )) {
+            $error = $trans_ordcorte->error;
+        }
+
+        $trans_ordcorte->execute();
+
+        ChromePhp::log(
+
+          $trans_ordcorte->affected_rows, //numero de filas que insertaria a la tabla mysql
+          $trans_ordcorte->insert_id  //numero de row en la tabla mysql que tendria dicho insert
+        );
+
+        if (!$connection->affected_rows) {
+            $connection->rollback();
+            $error = "Transaction failed: ";
+            $fallo_insrt_tb_ordCorte == true;
+        } elseif ($connection->affected_rows < 1){
+            $connection->rollback();
+            $fallo_insrt_tb_ordCorte == true;
+        }
 
       }//for $i
+
+
      /*- - - - - -tabla: insumo_orden_cortes  - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-     if($result_uno === true) {
-              $post_count = count($_POST);
-              for($i = 1; $i < $post_count; $i++ ){
-                $args = [];
-                $args['orden_corte'] = $_POST['orden_corte'] ?? NULL;
-                $args['fecha_emision'] = date("Y-m-d");
+      if($fallo_insrt_tb_ordCorte == false){
+        $post_count = count($_POST);
+        for($i = 1; $i < $post_count; $i++ ){
+            $args = [];
+            $args['orden_corte'] = $_POST['orden_corte'] ?? NULL;
+            $args['fecha_emision'] = date("Y-m-d");
+            //Filtro1: nombre de la tela(insumo) no existe
+            $postkey_cat = "nombre_cat_" . $i . "";//Dynamic post names
+             if(!isset($_POST["$postkey_cat"]) ){continue;}//si esta leyendo demas q regrese
+            //filtro2: total kg de tela
+            $postkey_kgrollo = "cant_solicitada_rollos_kg_" . $i . "";//Dynamic post names
+            if( empty($_POST["$postkey_kgrollo"]) ){continue;}
+            if( floatval($_POST["$postkey_kgrollo"]) < 0000.1 ){continue;}
 
-                 $postkey_cat = "nombre_cat_" . $i . "";//Dynamic post names
-                 if(!isset($_POST["$postkey_cat"]) ){continue;}//si esta leyendo demas q regrese
-                //filtro2: total kg de tela
-                $postkey_kgrollo = "cant_solicitada_rollos_kg_" . $i . "";//Dynamic post names
-                if( empty($_POST["$postkey_kgrollo"]) ){continue;}
-                if( floatval($_POST["$postkey_kgrollo"]) < 0000.1 ){continue;}
+            // $postkey_cat = "nombre_cat_" . $i . "";//Dynamic post names
+            $args['string_categ_sku'] = $_POST["$postkey_cat"] ?? NULL;        // ChromePhp::log('argu: '.$args['string_categ_sku'].' postvalue: '.$_POST['$postkey_cat']);
 
-                // $postkey_cat = "nombre_cat_" . $i . "";//Dynamic post names
-                $args['string_categ_sku'] = $_POST["$postkey_cat"] ?? NULL;        // ChromePhp::log('argu: '.$args['string_categ_sku'].' postvalue: '.$_POST['$postkey_cat']);
-
-                $postkey_colorsku = "name_colorsku_" . $i . "";//Dynamic post names
-                $args['color_rollo'] = $_POST["$postkey_colorsku"] ?? NULL;
+            $postkey_colorsku = "name_colorsku_" . $i . "";//Dynamic post names
+            $args['color_rollo'] = $_POST["$postkey_colorsku"] ?? NULL;
 
 
-                $postkey_colorrollo = "name_colorrollo_" . $i . "";//Dynamic post names
-                $args['sku'] = utf8_decode($_POST["$postkey_colorrollo"]);
+            $postkey_colorrollo = "name_colorrollo_" . $i . "";//Dynamic post names
+            $args['sku'] = utf8_decode($_POST["$postkey_colorrollo"]);
 
-                $postkey_kgrollo = "cant_solicitada_rollos_kg_" . $i . "";//Dynamic post names
-                $args['cant_solicitada_kg'] = utf8_decode($_POST["$postkey_kgrollo"]);
+            $postkey_kgrollo = "cant_solicitada_rollos_kg_" . $i . "";//Dynamic post names
+            $args['cant_solicitada_kg'] = utf8_decode($_POST["$postkey_kgrollo"]);
 
-                $args['status'] = 'para_produccion';
-                $orden_de_corte_insumo = new insumo_orden_corte($args);
+            $args['status'] = 'para_produccion';
+            $orden_de_corte_insumo = new insumo_orden_corte($args);
 
-                $result_dos = $orden_de_corte_insumo->save();
+            //$result_dos = $orden_de_corte_insumo->save();
 
-              }//for $i
-              $session->message('Data ha sido guardada');
-             redirect_to(url_for('view-orden_de_corte/orden_de_corte.php'));
-          }//if($result_uno === true)
+            if (!$trans_ordtela->prepare( $orden_de_corte_insumo->create_record_transac() )) {
+                $error = $trans_ordtela->error;
+            }
 
-           //if($result_dos === true) {
+            $trans_ordtela->execute();
 
-           //}
-  }else{
+            if (!$connection->affected_rows) {
+                $connection->rollback();
+                $error = "Transaction failed: ";
+            }
+
+          }//for-loop $i
+        }//$fallo_insrt_tb_ordCorte
+
+          $connection->commit();
+          $session->message('Data ha sido guardada');
+          redirect_to(url_for('view-orden_de_corte/orden_de_corte.php'));
+  } catch (Exception $e) {
+      $error = $e->getMessage();
+  }
+
+  }else{ //is_post_request
     //display form only
     $orden_de_corte = new orden_de_corte;
     $orden_de_corte->errors = "";

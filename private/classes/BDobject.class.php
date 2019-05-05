@@ -206,9 +206,25 @@ protected function sanitized_attributes(){
     return $result;
   }
 
+	//esta funcion hace el insert en la tabla
+	//INSERT-PUSH
+	  public function create_record_transac() {
+		$this->validate();
+		if(!empty($this->errors)){return false;}
+
+	    $attributes = $this->sanitized_attributes();
+	    $sql = "INSERT INTO ".static::$table_name." (";
+	    $sql .= join(', ', array_keys($attributes));
+	    $sql .= ") VALUES ('";
+	    $sql .= join("', '", array_values($attributes));
+	    $sql .= "')";
 
 
-  
+
+	    return $sql;
+	  }
+
+
 
 }
 ?>

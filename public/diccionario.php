@@ -5,6 +5,7 @@
 <link rel="stylesheet" media="all" href="<?php echo url_for('stylesheets/style_sk.css'); ?>" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" />
 
+
 <?php
   //pagination variables
   $current_page = $_GET['page'] ?? 1;
@@ -30,6 +31,11 @@
 
 <section class="alternate page-heading">
   <div class="container">
+
+
+    <h2>
+      <a type="button" href="<?php echo url_for('/view-gest-inventarios/index.php'); ?>" class="btn btn-dark">Ir a menu:</a>
+    </h2>
 
 
  <form id="addvariables">
