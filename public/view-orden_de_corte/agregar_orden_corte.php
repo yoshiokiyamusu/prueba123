@@ -12,6 +12,7 @@
 <?php
   //when submit
   if(is_post_request()) {
+  
     $post_count = count($_POST); //count how many posts
     //ChromePhp::log('total post num natural: '. $post_count);
     $post_count = ($post_count-2)/3; //ChromePhp::log('total post num2: '. $post_count);
